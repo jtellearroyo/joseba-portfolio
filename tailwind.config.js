@@ -1,21 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./app/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
   theme: {
-    extend: {
-      colors: {
-        slate: {
-          950: '#030712',
-          900: '#0f172a',
-          800: '#1e293b',
-          700: '#334155',
-        }
-      }
-    },
+    extend: {},
   },
   plugins: [],
-}
+};
