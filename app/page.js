@@ -100,6 +100,15 @@ const TIMELINE = [
   },
 ];
 
+const MARQUEE = [
+  'Agentes de voz con IA',
+  'CRM a medida',
+  'Google Cloud',
+  'Automatización de procesos',
+  'WhatsApp Business API',
+  'Google Ads',
+];
+
 const CAPABILITIES = [
   {
     group: 'Sistemas con IA',
@@ -165,7 +174,7 @@ function TechIcon({ name }) {
 /*  REVELADO AL HACER SCROLL                                          */
 /* ------------------------------------------------------------------ */
 
-function Reveal({ children, className = '', as: Tag = 'div', delay = 0 }) {
+function Reveal({ children, className = '', as: Tag = 'div', delay = 0, ...rest }) {
   const ref = useRef(null);
   const [in_, setIn] = useState(false);
 
@@ -198,9 +207,141 @@ function Reveal({ children, className = '', as: Tag = 'div', delay = 0 }) {
       ref={ref}
       className={`reveal ${in_ ? 'reveal-in' : ''} ${className}`}
       style={{ transitionDelay: in_ ? `${delay}ms` : '0ms' }}
+      {...rest}
     >
       {children}
     </Tag>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  INTERACCIÓN: SPOTLIGHT + INCLINACIÓN 3D                            */
+/* ------------------------------------------------------------------ */
+
+function reducedMotion() {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function handleSpotlight(e) {
+  if (reducedMotion()) return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+  el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+}
+
+function handleTilt(e) {
+  if (reducedMotion()) return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const px = (e.clientX - r.left) / r.width - 0.5;
+  const py = (e.clientY - r.top) / r.height - 0.5;
+  el.style.transform = `perspective(800px) rotateX(${py * -7}deg) rotateY(${px * 7}deg) scale3d(1.015,1.015,1.015)`;
+}
+
+function resetTilt(e) {
+  e.currentTarget.style.transform = '';
+}
+
+/* ------------------------------------------------------------------ */
+/*  BARRA DE PROGRESO DE SCROLL                                       */
+/* ------------------------------------------------------------------ */
+
+function ScrollProgress() {
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    let ticking = false;
+    function update() {
+      const root = document.documentElement;
+      const max = root.scrollHeight - root.clientHeight;
+      const pct = max > 0 ? (root.scrollTop / max) * 100 : 0;
+      if (barRef.current) barRef.current.style.width = `${pct}%`;
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
+  return (
+    <div className="scroll-progress" aria-hidden="true">
+      <div ref={barRef} className="scroll-progress-bar" />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  GLOW AMBIENTAL QUE SIGUE AL CURSOR                                 */
+/* ------------------------------------------------------------------ */
+
+function CursorGlow() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const fine = window.matchMedia('(pointer: fine)').matches;
+    if (!fine || reducedMotion()) return;
+
+    const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const target = { ...pos };
+    let raf;
+
+    function onMove(e) {
+      target.x = e.clientX;
+      target.y = e.clientY;
+    }
+
+    function loop() {
+      pos.x += (target.x - pos.x) * 0.1;
+      pos.y += (target.y - pos.y) * 0.1;
+      if (ref.current) ref.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+      raf = requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('mousemove', onMove);
+    raf = requestAnimationFrame(loop);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return <div ref={ref} className="cursor-glow" aria-hidden="true" />;
+}
+
+/* ------------------------------------------------------------------ */
+/*  BANDA DE TEXTO EN MOVIMIENTO                                       */
+/* ------------------------------------------------------------------ */
+
+function MarqueeBand() {
+  const row = (key) => (
+    <div className="marquee-row" key={key} aria-hidden={key === 'b'}>
+      {MARQUEE.map((m, i) => (
+        <span key={i} className="marquee-item">
+          {m}
+          <span className="marquee-dot">/</span>
+        </span>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="marquee">
+      <div className="marquee-track">
+        {row('a')}
+        {row('b')}
+      </div>
+    </div>
   );
 }
 
@@ -382,7 +523,12 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-10">
+    <>
+      <ScrollProgress />
+      <CursorGlow />
+      <div className="noise-overlay" aria-hidden="true" />
+
+      <div className="relative z-[1] mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-10">
       {/* Barra móvil */}
       <header className="sticky top-0 z-40 -mx-5 flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg)]/95 px-5 py-3.5 backdrop-blur sm:-mx-8 sm:px-8 lg:hidden">
         <a href="#inicio" className="flex items-center gap-2.5 font-display text-[17px] font-semibold tracking-tight">
@@ -478,13 +624,21 @@ export default function Page() {
           {/* INICIO */}
           <section id="inicio" className="relative scroll-mt-24 pt-10 lg:pt-0">
             <div className="hero-glow" aria-hidden="true" />
+            <span className="hero-ghost hidden lg:block" aria-hidden="true">
+              IA
+            </span>
 
             <p className="font-mono text-[11px] leading-relaxed text-[var(--muted)] lg:hidden">
               Bilbao, Bizkaia
             </p>
 
             <h2 className="mt-4 max-w-[15ch] font-display text-[38px] font-semibold leading-[1.02] tracking-tight sm:text-[54px] lg:mt-0 lg:max-w-[16ch] lg:text-[64px]">
-              Que el teléfono lo coja el software.
+              {'Que el teléfono lo coja el software.'.split(' ').flatMap((w, i) => [
+                <span key={i} className="word-in" style={{ animationDelay: `${i * 65}ms` }}>
+                  {w}
+                </span>,
+                ' ',
+              ])}
             </h2>
 
             <p className="mt-6 max-w-[62ch] text-[16px] leading-[1.7] text-[var(--muted)] sm:text-[17px]">
@@ -507,6 +661,10 @@ export default function Page() {
             </div>
           </section>
 
+          <div className="mt-16 sm:mt-20">
+            <MarqueeBand />
+          </div>
+
           {/* SISTEMAS */}
           <section id="sistemas" className="scroll-mt-24 pt-24 sm:pt-32">
             <SectionHead title="Sistemas" note="Tres piezas de trabajo, con lo que hay debajo de cada una." />
@@ -517,7 +675,8 @@ export default function Page() {
                   as="article"
                   key={s.ref}
                   delay={i * 80}
-                  className="hover-lift border-l border-[var(--line-strong)] pl-5 sm:pl-8"
+                  className="hover-lift spotlight border-l border-[var(--line-strong)] pl-5 sm:pl-8"
+                  onMouseMove={handleSpotlight}
                 >
                   <div className="flex items-baseline gap-4">
                     <span className="font-mono text-[11px] text-[var(--signal)]">{s.ref}</span>
@@ -533,7 +692,11 @@ export default function Page() {
                     {s.summary}
                   </p>
 
-                  <div className="mt-7 aspect-[16/10] w-full overflow-hidden border border-[var(--line)] bg-[var(--panel)] sm:aspect-[16/9]">
+                  <div
+                    className="tilt-card mt-7 aspect-[16/10] w-full overflow-hidden border border-[var(--line)] bg-[var(--panel)] sm:aspect-[16/9]"
+                    onMouseMove={handleTilt}
+                    onMouseLeave={resetTilt}
+                  >
                     {s.image ? (
                       <img src={s.image} alt={s.name} loading="lazy" className="h-full w-full object-cover" />
                     ) : (
@@ -603,7 +766,13 @@ export default function Page() {
 
             <div className="mt-12 grid gap-px border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2">
               {CAPABILITIES.map((c, i) => (
-                <Reveal as="div" key={c.group} delay={i * 70} className="hover-lift bg-[var(--bg)] p-6">
+                <Reveal
+                  as="div"
+                  key={c.group}
+                  delay={i * 70}
+                  className="hover-lift spotlight bg-[var(--bg)] p-6"
+                  onMouseMove={handleSpotlight}
+                >
                   <h4 className="font-display text-[16px] font-semibold tracking-tight text-[var(--signal)]">
                     {c.group}
                   </h4>
@@ -659,7 +828,8 @@ export default function Page() {
           </section>
         </main>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
