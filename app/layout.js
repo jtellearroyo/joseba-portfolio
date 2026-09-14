@@ -1,11 +1,11 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Joseba — Sistemas de IA y automatización | Bilbao',
+  title: 'Joseba Telletxea — Currículum | Sistemas de IA y automatización',
   description:
-    'Construyo agentes de voz con IA y CRMs a medida que atienden llamadas, gestionan citas y automatizan procesos. Diecisiete años en telecomunicaciones.',
+    'Currículum de Joseba Telletxea. Diseño y construyo agentes de voz con IA y CRMs a medida que atienden llamadas, gestionan citas y automatizan procesos. Diecisiete años en telecomunicaciones.',
   openGraph: {
-    title: 'Joseba — Sistemas de IA y automatización',
+    title: 'Joseba Telletxea — Currículum',
     description:
       'Agentes de voz con IA, CRM modular y automatización de procesos. Bilbao, Bizkaia.',
     locale: 'es_ES',

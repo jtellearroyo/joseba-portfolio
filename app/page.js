@@ -35,7 +35,7 @@ const SYSTEMS = [
     role: 'Diseño, desarrollo e integración',
     years: '2023 — 2026',
     summary:
-      'Un número de teléfono que atiende solo. Entiende lo que pide quien llama, consulta la agenda, propone huecos reales y cierra la cita sin que nadie descuelgue.',
+      'Diseñé y construí un asistente de voz con IA que contesta el teléfono, entiende lo que pide quien llama, consulta la agenda en tiempo real y cierra la cita sin que nadie tenga que descolgar.',
     build: [
       'Síntesis de voz con Eleven Labs para que la conversación no suene a robot',
       'Orquestación en Google Cloud: intención, agenda, confirmación',
@@ -51,7 +51,7 @@ const SYSTEMS = [
     role: 'Arquitectura y producto',
     years: '2023 — 2026',
     summary:
-      'Un CRM que se monta por piezas. Cada cliente activa solo los módulos que usa, y los agentes de voz escriben directamente en él: la llamada entra por un lado y sale convertida en ficha, cita y aviso.',
+      'Diseñé la arquitectura y construí un CRM modular donde cada cliente activa solo los módulos que necesita, y donde los agentes de voz escriben directamente: la llamada entra por un lado y sale convertida en ficha, cita y aviso.',
     build: [
       'Núcleo común con módulos activables por cliente',
       'Los agentes de voz y WhatsApp escriben en el CRM en tiempo real',
@@ -67,7 +67,7 @@ const SYSTEMS = [
     role: 'Dirección y ejecución',
     years: '2009 — 2026',
     summary:
-      'La parte menos vistosa y la que paga las facturas. Web propia de principio a fin, campañas de pago, SEO técnico y medición, con el objetivo de que el teléfono suene por algo más que el boca a boca.',
+      'Llevé de principio a fin la web corporativa, las campañas de pago, el SEO técnico y la medición: la parte menos vistosa, pero la que hace que el teléfono suene por algo más que el boca a boca.',
     build: [
       'Web corporativa completa: estructura, contenido, SEO técnico y medición',
       'Campañas de Google Ads gestionadas y optimizadas de forma continua',
@@ -534,12 +534,12 @@ export default function Page() {
         <a href="#inicio" className="flex items-center gap-2.5 font-display text-[17px] font-semibold tracking-tight">
           <span className="avatar-frame avatar-frame-sm">
             {PROFILE.photo ? (
-              <img src={PROFILE.photo} alt="Joseba" className="h-full w-full object-cover" />
+              <img src={PROFILE.photo} alt="Joseba Telletxea" className="h-full w-full object-cover" />
             ) : (
               <span className="avatar-fallback">J</span>
             )}
           </span>
-          Joseba
+          Joseba Telletxea
         </a>
         <button
           type="button"
@@ -573,14 +573,17 @@ export default function Page() {
           <div>
             <span className="avatar-frame avatar-frame-lg">
               {PROFILE.photo ? (
-                <img src={PROFILE.photo} alt="Joseba" className="h-full w-full object-cover" />
+                <img src={PROFILE.photo} alt="Joseba Telletxea" className="h-full w-full object-cover" />
               ) : (
                 <span className="avatar-fallback avatar-fallback-lg">J</span>
               )}
             </span>
 
-            <h1 className="mt-6 font-display text-[40px] font-semibold leading-[1.05] tracking-tight">
-              Joseba
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--signal)]">
+              Currículum · Portfolio
+            </p>
+            <h1 className="mt-3 font-display text-[32px] font-semibold leading-[1.1] tracking-tight">
+              Joseba Telletxea
             </h1>
             <p className="mt-3 max-w-[240px] text-[15px] leading-relaxed text-[var(--muted)]">
               Construyo sistemas de IA que atienden, entienden y resuelven sin que nadie descuelgue.
@@ -628,8 +631,8 @@ export default function Page() {
               IA
             </span>
 
-            <p className="font-mono text-[11px] leading-relaxed text-[var(--muted)] lg:hidden">
-              Bilbao, Bizkaia
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--signal)] lg:hidden">
+              Currículum · Bilbao, Bizkaia
             </p>
 
             <h2 className="mt-4 max-w-[15ch] font-display text-[38px] font-semibold leading-[1.02] tracking-tight sm:text-[54px] lg:mt-0 lg:max-w-[16ch] lg:text-[64px]">
@@ -642,9 +645,9 @@ export default function Page() {
             </h2>
 
             <p className="mt-6 max-w-[62ch] text-[16px] leading-[1.7] text-[var(--muted)] sm:text-[17px]">
-              Llevo diecisiete años en telecomunicaciones, los tres últimos construyendo agentes de
-              voz con IA y el CRM donde aterriza todo lo que atienden. Debajo hay una llamada real de
-              las que gestionan estos sistemas.
+              Soy Joseba Telletxea. Llevo diecisiete años en telecomunicaciones, los tres últimos
+              diseñando y construyendo yo mismo agentes de voz con IA y el CRM donde aterriza todo lo
+              que atienden. Debajo hay una llamada real de las que gestionan los sistemas que hice.
             </p>
 
             <div className="mt-9">
@@ -667,7 +670,11 @@ export default function Page() {
 
           {/* SISTEMAS */}
           <section id="sistemas" className="scroll-mt-24 pt-24 sm:pt-32">
-            <SectionHead title="Sistemas" note="Tres piezas de trabajo, con lo que hay debajo de cada una." />
+            <SectionHead
+              eyebrow="01 — Lo que he hecho"
+              question="¿Qué he construido estos últimos años?"
+              note="Esto es lo que diseñé, construí y puse en marcha yo mismo, con mis manos, en mi puesto actual."
+            />
 
             <div className="mt-12 space-y-16 sm:space-y-20">
               {SYSTEMS.map((s, i) => (
@@ -733,7 +740,11 @@ export default function Page() {
 
           {/* TRAYECTORIA */}
           <section id="trayectoria" className="scroll-mt-24 pt-24 sm:pt-32">
-            <SectionHead title="Trayectoria" note="De punto de venta a dirección de producto, sin salir del sector." />
+            <SectionHead
+              eyebrow="02 — Trayectoria"
+              question="¿Cómo he llegado hasta aquí?"
+              note="De punto de venta a dirección de producto, sin salir del sector."
+            />
 
             <ol className="mt-12">
               {TIMELINE.map((t, i) => (
@@ -762,7 +773,11 @@ export default function Page() {
 
           {/* CAPACIDADES */}
           <section id="capacidades" className="scroll-mt-24 pt-24 sm:pt-32">
-            <SectionHead title="Capacidades" note="Lo que uso a diario, no una lista de todo lo que he tocado." />
+            <SectionHead
+              eyebrow="03 — Capacidades"
+              question="¿Qué sé hacer, en concreto?"
+              note="Lo que uso a diario, no una lista de todo lo que he tocado."
+            />
 
             <div className="mt-12 grid gap-px border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2">
               {CAPABILITIES.map((c, i) => (
@@ -822,7 +837,7 @@ export default function Page() {
             </div>
 
             <footer className="mt-20 border-t border-[var(--line)] pt-6 font-mono text-[11px] text-[var(--muted)]">
-              <p>Joseba — Bilbao, Bizkaia</p>
+              <p>Joseba Telletxea — Bilbao, Bizkaia</p>
               <p className="mt-1">Diseñado y programado por mí. 2026.</p>
             </footer>
           </section>
@@ -833,15 +848,37 @@ export default function Page() {
   );
 }
 
-function SectionHead({ title, note }) {
+function SectionHead({ eyebrow, question, note }) {
+  const ref = useRef(null);
+  const [in_, setIn] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (reducedMotion()) {
+      setIn(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIn(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.3, rootMargin: '0px 0px -15% 0px' }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <Reveal className="border-b border-[var(--line-strong)] pb-5">
-      <h3 className="font-display text-[13px] font-semibold tracking-tight text-[var(--muted)]">
-        {title}
-      </h3>
-      <p className="mt-2 max-w-[52ch] font-display text-[22px] font-semibold leading-snug tracking-tight sm:text-[26px]">
-        {note}
+    <div ref={ref} className={`big-question ${in_ ? 'big-question-in' : ''} border-b border-[var(--line-strong)] pb-6`}>
+      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--signal)]">{eyebrow}</span>
+      <p className="mt-4 max-w-[18ch] font-display text-[32px] font-semibold leading-[1.1] tracking-tight sm:text-[44px] lg:text-[52px]">
+        {question}
       </p>
-    </Reveal>
+      <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-[var(--muted)]">{note}</p>
+    </div>
   );
 }

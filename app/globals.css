@@ -529,6 +529,22 @@ a {
   opacity: 1;
 }
 
+/* ---------- Pregunta grande al hacer scroll ---------- */
+
+.big-question {
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
+  filter: blur(4px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.8s ease;
+}
+
+.big-question-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
 /* ---------- Inclinación 3D ---------- */
 
 .tilt-card {
@@ -549,6 +565,12 @@ a {
   .marquee-track,
   .word-in {
     animation: none !important;
+  }
+  .big-question {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
   }
   .word-in {
     opacity: 1;

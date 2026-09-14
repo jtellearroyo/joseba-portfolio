@@ -19,9 +19,7 @@ Nota: ya no se usa `lucide-react`. Puedes dejarlo en `package.json`, no molesta.
 
 ## Lo que tienes que cambiar antes de publicar
 
-El correo y el LinkedIn ya están puestos (`j.telle@hotmail.com` y tu perfil real).
-
-Si quieres poner tu apellido, está en dos sitios: el rail de escritorio y la cabecera móvil, ambos ponen solo `Joseba`.
+El correo, el LinkedIn y el nombre completo (Joseba Telletxea) ya están puestos.
 
 ---
 
