@@ -1,0 +1,7 @@
+Pon aqui tus capturas.
+
+Recomendado: 1600x900 px, JPG o WebP.
+
+Luego, en app/page.js, dentro del array SYSTEMS,
+cambia    image: null
+por       image: '/nombre-del-archivo.jpg'
