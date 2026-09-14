@@ -1,350 +1,560 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Menu, X, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-const NAV = [
-  { label: 'Trayectoria', href: '#trayectoria' },
-  { label: 'Proyectos', href: '#proyectos' },
-  { label: 'Skills', href: '#skills' },
+/* ------------------------------------------------------------------ */
+/*  CONTENIDO                                                          */
+/* ------------------------------------------------------------------ */
+
+const SECTIONS = [
+  { id: 'inicio', label: 'Inicio' },
+  { id: 'sistemas', label: 'Sistemas' },
+  { id: 'trayectoria', label: 'Trayectoria' },
+  { id: 'capacidades', label: 'Capacidades' },
+  { id: 'contacto', label: 'Contacto' },
 ];
 
-const projects = [
-  {
-    id: 1,
-    title: 'Sistema de Asistencia Inteligente 24/7',
-    description: 'Automatización de atención al cliente con IA, síntesis de voz y gestión de citas',
-    tags: ['Python', 'APIs IA', 'Google Cloud', 'Eleven Labs', 'NLP'],
-    image: null,
-    impact: '70% reducción en tiempo de respuesta manual',
-    details:
-      'Sistema completo que atiende llamadas automáticamente, gestiona citas y automatiza la atención. Integración con plataformas cloud para automatización de procesos.',
-  },
-  {
-    id: 2,
-    title: 'CRM Modular y Escalable',
-    description: 'Plataforma de gestión de relaciones empresarial adaptable',
-    tags: ['JavaScript', 'React', 'PostgreSQL', 'APIs REST', 'Automatización'],
-    image: null,
-    impact: 'Arquitectura multi-cliente en producción',
-    details:
-      'Arquitectura modular que permite personalización según necesidades. Integración de agentes inteligentes para gestión de reservas y automatización de workflows.',
-  },
-  {
-    id: 3,
-    title: 'Estrategia Marketing Digital & Presencia Web',
-    description: 'Campañas Google Ads, SEO y presencia digital estratégica',
-    tags: ['Google Ads', 'Analytics', 'SEO/SEM', 'Email Marketing'],
-    image: null,
-    impact: 'Captación digital como canal principal de leads',
-    details:
-      'Campañas data-driven en plataformas de publicidad. Desarrollo web moderno. Automatización de marketing y análisis de conversiones.',
-  },
+// Guion de la llamada que se reproduce en la portada.
+const CALL = [
+  { who: 'ia', text: 'Buenos días, Clínica Ondarreta. ¿En qué puedo ayudarle?', ms: 2200 },
+  { who: 'persona', text: 'Hola, quería pedir cita con el fisio.', ms: 1800 },
+  { who: 'ia', text: 'Claro. Tengo hueco el jueves a las 17:30 o el viernes a las 10:00.', ms: 2600 },
+  { who: 'persona', text: 'El jueves me viene bien.', ms: 1500 },
+  { who: 'ia', text: 'Hecho. Le mando la confirmación por WhatsApp ahora mismo.', ms: 2400 },
 ];
 
-const experience = [
+const SYSTEMS = [
   {
-    period: '2023 - 2026',
-    role: 'Director de Proyectos | Product Developer',
-    company: 'Operador de Telecomunicaciones',
-    achievements: [
-      'Desarrollo integral de sistemas de IA para automatización',
-      'Arquitectura de CRM modular multi-cliente',
-      'Liderazgo técnico en innovación',
-      'Integración de múltiples APIs y plataformas',
+    ref: 'A',
+    name: 'Asistente de voz 24/7',
+    role: 'Diseño, desarrollo e integración',
+    years: '2023 — 2026',
+    summary:
+      'Un número de teléfono que atiende solo. Entiende lo que pide quien llama, consulta la agenda, propone huecos reales y cierra la cita sin que nadie descuelgue.',
+    build: [
+      'Síntesis de voz con Eleven Labs para que la conversación no suene a robot',
+      'Orquestación en Google Cloud: intención, agenda, confirmación',
+      'Salida a WhatsApp Business API para el recordatorio',
+      'Escalado a persona cuando la conversación se sale del guion',
     ],
+    stack: ['Google Cloud', 'Eleven Labs', 'WhatsApp Business API', 'Telefonía IP'],
+    image: null,
   },
   {
-    period: '2009 - 2022',
-    role: 'Especialista en Marketing Digital → Codirector',
-    company: 'Distribuidor de Telecomunicaciones',
-    achievements: [
-      'Evolución desde atención al cliente a especialización digital',
-      'Gestión de campañas Google Ads',
-      'Desarrollo de arquitectura web multi-operador',
-      'Gestión de departamento y liderazgo de equipos',
+    ref: 'B',
+    name: 'CRM modular multicliente',
+    role: 'Arquitectura y producto',
+    years: '2023 — 2026',
+    summary:
+      'Un CRM que se monta por piezas. Cada cliente activa solo los módulos que usa, y los agentes de voz escriben directamente en él: la llamada entra por un lado y sale convertida en ficha, cita y aviso.',
+    build: [
+      'Núcleo común con módulos activables por cliente',
+      'Los agentes de voz y WhatsApp escriben en el CRM en tiempo real',
+      'Gestión de reservas, fichas y seguimiento en un único sitio',
+      'APIs REST para conectar con lo que ya tiene el cliente',
     ],
+    stack: ['JavaScript', 'PHP', 'PostgreSQL', 'APIs REST'],
+    image: null,
+  },
+  {
+    ref: 'C',
+    name: 'Captación digital y web corporativa',
+    role: 'Dirección y ejecución',
+    years: '2009 — 2026',
+    summary:
+      'La parte menos vistosa y la que paga las facturas. Web propia de principio a fin, campañas de pago, SEO técnico y medición, con el objetivo de que el teléfono suene por algo más que el boca a boca.',
+    build: [
+      'Web corporativa completa: estructura, contenido, SEO técnico y medición',
+      'Campañas de Google Ads gestionadas y optimizadas de forma continua',
+      'Email marketing y comunicación masiva a base instalada',
+      'Analítica y Tag Manager para saber qué canal trae clientes',
+    ],
+    stack: ['Google Ads', 'Analytics', 'Tag Manager', 'WordPress', 'SEO'],
+    image: null,
   },
 ];
 
-const skills = {
-  'IA & APIs': ['APIs de IA', 'Eleven Labs', 'Google Cloud Platform', 'WhatsApp Business API', 'Automatización'],
-  Backend: ['PHP', 'JavaScript', 'Node.js', 'PostgreSQL', 'APIs REST'],
-  Frontend: ['React', 'HTML / CSS', 'WordPress', 'Diseño responsive'],
-  Marketing: ['Google Ads', 'Analytics', 'Email Marketing', 'SEO / SEM'],
-};
+const TIMELINE = [
+  {
+    years: '2023 — 2026',
+    role: 'Dirección de proyectos y desarrollo de producto',
+    place: 'Operador de telecomunicaciones',
+    note: 'Construcción de los agentes de voz con IA y del CRM modular. Además, toda la capa de marketing: web, campañas, SEO y diseño.',
+  },
+  {
+    years: '2009 — 2022',
+    role: 'De atención al cliente a codirección de departamento',
+    place: 'Distribuidor oficial de telecomunicaciones',
+    note: 'Trece años. Empecé en punto de venta y acabé dirigiendo proyectos y el área digital: desarrollo web para clientes, campañas y comunicación.',
+  },
+  {
+    years: '2008 — 2009',
+    role: 'Venta y contratación en punto de venta',
+    place: 'Operador móvil en gran superficie',
+    note: 'Donde aprendí a explicar cosas técnicas a gente que no quiere oír nada técnico.',
+  },
+];
 
-export default function Portfolio() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const CAPABILITIES = [
+  {
+    group: 'Sistemas con IA',
+    items: ['Agentes de voz', 'Síntesis de voz', 'Automatización de procesos', 'Integración de APIs', 'Google Cloud'],
+  },
+  {
+    group: 'Desarrollo',
+    items: ['JavaScript', 'PHP', 'Node.js', 'PostgreSQL', 'APIs REST', 'HTML y CSS', 'WordPress'],
+  },
+  {
+    group: 'Crecimiento',
+    items: ['Google Ads', 'Analytics', 'Tag Manager', 'SEO técnico', 'Email marketing'],
+  },
+  {
+    group: 'Dirección',
+    items: ['Gestión de proyectos', 'Relación con cliente', 'Equipos', 'Producto'],
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  ONDA DE VOZ                                                        */
+/* ------------------------------------------------------------------ */
+
+function Waveform({ active, speaker }) {
+  const bars = useMemo(
+    () => Array.from({ length: 44 }, (_, i) => ({ i, delay: (i % 11) * 0.07, base: 6 + ((i * 37) % 22) })),
+    []
+  );
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-slate-950 text-white">
-      {/* Navegación */}
-      <nav className="fixed top-0 z-50 w-full border-b border-slate-800 bg-slate-950/90 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl px-5">
-          <div className="flex h-16 items-center justify-between">
-            <a
-              href="#top"
-              className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-2xl font-bold text-transparent"
-            >
-              J.
-            </a>
+    <div className="flex h-14 items-center gap-[3px]" aria-hidden="true">
+      {bars.map((b) => (
+        <span
+          key={b.i}
+          className={active ? 'wave-bar' : ''}
+          style={{
+            display: 'block',
+            width: 3,
+            borderRadius: 2,
+            height: active ? undefined : 3,
+            '--h': `${b.base}px`,
+            animationDelay: `${b.delay}s`,
+            background: speaker === 'ia' ? 'var(--signal)' : 'var(--muted)',
+            opacity: active ? 1 : 0.32,
+            transition: 'opacity .3s ease, background .3s ease',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
-            <div className="hidden items-center gap-8 md:flex">
-              {NAV.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-gray-300 transition-colors hover:text-blue-400"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <a
-                href="#contacto"
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-blue-700"
-              >
-                Contacto
-              </a>
-            </div>
+/* ------------------------------------------------------------------ */
+/*  PANEL DE LLAMADA                                                   */
+/* ------------------------------------------------------------------ */
 
-            <button
-              type="button"
-              aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
-              aria-expanded={isMenuOpen}
-              className="p-2 md:hidden"
-              onClick={() => setIsMenuOpen((v) => !v)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+function CallPanel() {
+  const [step, setStep] = useState(-1);
+  const [done, setDone] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const timers = useRef([]);
 
-          {isMenuOpen && (
-            <div className="flex flex-col gap-1 pb-4 md:hidden">
-              {NAV.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="rounded-lg px-2 py-3 text-gray-300 transition-colors hover:bg-slate-800 hover:text-blue-400"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <a
-                href="#contacto"
-                onClick={() => setIsMenuOpen(false)}
-                className="mt-1 w-fit rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-blue-700"
-              >
-                Contacto
-              </a>
-            </div>
-          )}
+  const reduced =
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function clearTimers() {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }
+
+  function play() {
+    clearTimers();
+    setDone(false);
+    setSeconds(0);
+    setStep(-1);
+
+    if (reduced) {
+      setStep(CALL.length - 1);
+      setDone(true);
+      setSeconds(11);
+      return;
+    }
+
+    let acc = 600;
+    CALL.forEach((line, i) => {
+      timers.current.push(setTimeout(() => setStep(i), acc));
+      acc += line.ms;
+    });
+    timers.current.push(
+      setTimeout(() => {
+        setDone(true);
+        setStep(CALL.length);
+      }, acc + 400)
+    );
+  }
+
+  useEffect(() => {
+    play();
+    return clearTimers;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (done || step < 0) return;
+    const t = setInterval(() => setSeconds((s) => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [done, step]);
+
+  const talking = step >= 0 && step < CALL.length ? CALL[step].who : null;
+  const visible = CALL.slice(0, Math.max(step + 1, 0));
+
+  return (
+    <div className="panel overflow-hidden">
+      {/* Cabecera */}
+      <div className="flex items-center justify-between gap-4 border-b border-[var(--line)] px-4 py-3 sm:px-5">
+        <div className="flex items-center gap-2.5">
+          <span className={`dot ${done ? 'dot-done' : 'dot-live'}`} />
+          <span className="font-mono text-[11px] tracking-wide text-[var(--muted)]">
+            {done ? 'Llamada finalizada' : 'Llamada en curso'}
+          </span>
         </div>
-      </nav>
+        <span className="font-mono text-[11px] text-[var(--muted)]">
+          {String(Math.floor(seconds / 60)).padStart(2, '0')}:{String(seconds % 60).padStart(2, '0')}
+        </span>
+      </div>
 
-      {/* Hero */}
-      <section id="top" className="mx-auto max-w-6xl px-5 pb-16 pt-28 sm:pt-36">
-        <div className="animate-fade-in">
-          <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
-            Construyo
-            <span className="mt-1 block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-600 bg-clip-text text-transparent">
-              sistemas con IA
-            </span>
-          </h1>
+      {/* Onda */}
+      <div className="px-4 pt-5 sm:px-5">
+        <Waveform active={!!talking} speaker={talking} />
+      </div>
 
-          <p className="mb-8 max-w-2xl text-base text-gray-300 sm:text-xl">
-            Director de proyectos, programador y especialista en IA aplicada a la automatización de
-            procesos. 17 años convirtiendo operativas complejas en sistemas que funcionan solos.
-          </p>
+      {/* Transcripción */}
+      <div className="min-h-[212px] px-4 pb-4 pt-4 sm:min-h-[200px] sm:px-5">
+        <ul className="space-y-3">
+          {visible.map((line, i) => (
+            <li key={i} className="line-in flex gap-3">
+              <span
+                className="mt-[3px] shrink-0 font-mono text-[10px] uppercase tracking-[0.14em]"
+                style={{ color: line.who === 'ia' ? 'var(--signal)' : 'var(--muted)' }}
+              >
+                {line.who === 'ia' ? 'IA' : 'Cliente'}
+              </span>
+              <span className={`text-[13.5px] leading-relaxed sm:text-sm ${line.who === 'ia' ? 'text-[var(--ink)]' : 'text-[var(--muted)]'}`}>
+                {line.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-          <div className="flex flex-wrap gap-3">
+      {/* Resultado */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--panel-2)] px-4 py-3 sm:px-5">
+        <span
+          className={`font-mono text-[11px] transition-opacity duration-500 ${done ? 'opacity-100' : 'opacity-0'}`}
+          style={{ color: 'var(--ok)' }}
+        >
+          Cita creada en el CRM · WhatsApp enviado
+        </span>
+        <button
+          type="button"
+          onClick={play}
+          className="replay font-mono text-[11px] text-[var(--muted)]"
+        >
+          Repetir llamada
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  PÁGINA                                                             */
+/* ------------------------------------------------------------------ */
+
+export default function Page() {
+  const [current, setCurrent] = useState('inicio');
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setCurrent(e.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    SECTIONS.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div className="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-10">
+      {/* Barra móvil */}
+      <header className="sticky top-0 z-40 -mx-5 flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg)]/95 px-5 py-3.5 backdrop-blur sm:-mx-8 sm:px-8 lg:hidden">
+        <a href="#inicio" className="font-display text-[17px] font-semibold tracking-tight">
+          Joseba
+        </a>
+        <button
+          type="button"
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          onClick={() => setMenuOpen((v) => !v)}
+          className="font-mono text-[11px] text-[var(--muted)]"
+        >
+          {menuOpen ? 'Cerrar' : 'Menú'}
+        </button>
+      </header>
+
+      {menuOpen && (
+        <nav className="-mx-5 border-b border-[var(--line)] bg-[var(--panel)] px-5 py-2 sm:-mx-8 sm:px-8 lg:hidden">
+          {SECTIONS.map((s) => (
             <a
-              href="#proyectos"
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium transition-colors hover:bg-blue-700 sm:px-8"
+              key={s.id}
+              href={`#${s.id}`}
+              onClick={() => setMenuOpen(false)}
+              className="block border-b border-[var(--line)] py-3 text-[15px] text-[var(--muted)] last:border-0"
             >
-              Ver proyectos <ArrowRight size={18} />
+              {s.label}
             </a>
-            <a
-              href="#contacto"
-              className="rounded-lg border border-blue-400 px-6 py-3 font-medium text-blue-400 transition-colors hover:bg-blue-400/10 sm:px-8"
-            >
-              Hablar conmigo
-            </a>
-          </div>
-        </div>
-      </section>
+          ))}
+        </nav>
+      )}
 
-      {/* Trayectoria */}
-      <section id="trayectoria" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16 sm:py-20">
-        <h2 className="mb-10 text-3xl font-bold sm:text-4xl">Mi trayectoria</h2>
-
-        <div className="grid gap-10 md:grid-cols-2 md:gap-12">
-          <div className="space-y-5">
-            <p className="text-base text-gray-300 sm:text-lg">
-              He crecido desde la atención al cliente hasta la dirección de proyectos. El camino pasó
-              por el marketing digital y el desarrollo web, y ha terminado en la integración de
-              sistemas de <strong className="text-white">inteligencia artificial</strong> para
-              automatizar y escalar operaciones.
+      <div className="lg:flex lg:gap-16">
+        {/* ---------------- RAIL ---------------- */}
+        <aside className="hidden lg:flex lg:h-screen lg:w-[300px] lg:shrink-0 lg:flex-col lg:justify-between lg:py-16 lg:sticky lg:top-0">
+          <div>
+            <h1 className="font-display text-[40px] font-semibold leading-[1.05] tracking-tight">
+              Joseba
+            </h1>
+            <p className="mt-3 max-w-[240px] text-[15px] leading-relaxed text-[var(--muted)]">
+              Construyo sistemas de IA que atienden, entienden y resuelven sin que nadie descuelgue.
             </p>
-            <p className="text-base text-gray-300 sm:text-lg">
-              Hoy trabajo en la construcción de asistentes de voz y texto, CRMs a medida y
-              automatizaciones que conectan APIs, telefonía y mensajería.
-            </p>
-          </div>
 
-          <div className="space-y-4">
-            {experience.map((exp) => (
-              <div
-                key={exp.period}
-                className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 transition-colors hover:border-slate-700 sm:p-6"
-              >
-                <div className="mb-2 text-sm font-medium text-blue-400">{exp.period}</div>
-                <h3 className="mb-1 text-lg font-bold sm:text-xl">{exp.role}</h3>
-                <p className="mb-4 text-sm text-gray-400">{exp.company}</p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  {exp.achievements.map((a) => (
-                    <li key={a} className="flex gap-2">
-                      <span aria-hidden="true" className="mt-0.5 text-blue-400">
-                        →
-                      </span>
-                      <span>{a}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Proyectos */}
-      <section id="proyectos" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16 sm:py-20">
-        <h2 className="mb-10 text-3xl font-bold sm:text-4xl">Proyectos principales</h2>
-
-        <div className="grid gap-8 sm:gap-12">
-          {projects.map((project, idx) => (
-            <article
-              key={project.id}
-              className="grid items-center gap-6 rounded-xl border border-slate-800 bg-slate-900/40 p-5 transition-colors hover:border-blue-500/40 sm:p-8 md:grid-cols-2 md:gap-8"
-            >
-              <div className={idx % 2 === 1 ? 'md:order-2' : ''}>
-                <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
+            <nav className="mt-12 space-y-1">
+              {SECTIONS.map((s) => {
+                const on = current === s.id;
+                return (
+                  <a key={s.id} href={`#${s.id}`} className="group flex items-center gap-3 py-1.5">
+                    <span
+                      className="block h-px transition-all duration-300"
+                      style={{
+                        width: on ? 40 : 18,
+                        background: on ? 'var(--signal)' : 'var(--line-strong)',
+                      }}
                     />
-                  ) : (
-                    <div className="px-4 text-center text-gray-500">
-                      <div className="mb-2 text-4xl">📸</div>
-                      <p className="text-xs">Imagen pendiente</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className={idx % 2 === 1 ? 'md:order-1' : ''}>
-                <div className="mb-2 text-sm font-medium text-blue-400">Proyecto {project.id}</div>
-                <h3 className="mb-3 text-2xl font-bold leading-tight sm:text-3xl">{project.title}</h3>
-                <p className="mb-5 text-gray-300">{project.description}</p>
-
-                <div className="mb-5 rounded-lg border border-slate-800 bg-slate-950/60 p-4">
-                  <div className="mb-1 text-xs font-medium uppercase tracking-wide text-amber-400">
-                    Impacto
-                  </div>
-                  <p className="font-semibold text-white">{project.impact}</p>
-                </div>
-
-                <p className="mb-5 text-sm text-gray-400">{project.details}</p>
-
-                <ul className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-xs text-blue-300"
+                    <span
+                      className="text-[14px] transition-colors duration-300"
+                      style={{ color: on ? 'var(--ink)' : 'var(--muted)' }}
                     >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Skills */}
-      <section id="skills" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16 sm:py-20">
-        <h2 className="mb-10 text-3xl font-bold sm:text-4xl">Especialidades</h2>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {Object.entries(skills).map(([category, items]) => (
-            <div
-              key={category}
-              className="rounded-xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-5 transition-colors hover:border-blue-400/40 sm:p-6"
-            >
-              <h3 className="mb-4 text-base font-bold text-blue-400 sm:text-lg">{category}</h3>
-              <ul className="space-y-2">
-                {items.map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
-                    <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Contacto */}
-      <section id="contacto" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16 sm:py-20">
-        <div className="max-w-2xl">
-          <h2 className="mb-5 text-3xl font-bold sm:text-4xl">Vamos a trabajar juntos</h2>
-          <p className="mb-8 text-base text-gray-300 sm:text-xl">
-            Si buscas a alguien que entienda tanto la parte técnica como el impacto en negocio,
-            hablemos. Estoy disponible para nuevos proyectos y para incorporarme a un equipo.
-          </p>
-
-          <a
-            href="mailto:TU-EMAIL@AQUI.COM"
-            className="mb-6 flex w-fit items-center gap-2 rounded-lg bg-blue-600 px-6 py-4 text-base font-medium transition-colors hover:bg-blue-700 sm:px-8 sm:text-lg"
-          >
-            <Mail size={20} /> Enviar email
-          </a>
-
-          <div className="flex gap-3">
-            <a
-              href="https://www.linkedin.com/in/TU-USUARIO"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="rounded-lg bg-slate-800 p-3 transition-colors hover:bg-slate-700"
-            >
-              <Linkedin size={20} />
-            </a>
-            <a
-              href="https://github.com/jtellearroyo"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="rounded-lg bg-slate-800 p-3 transition-colors hover:bg-slate-700"
-            >
-              <Github size={20} />
-            </a>
+                      {s.label}
+                    </span>
+                  </a>
+                );
+              })}
+            </nav>
           </div>
-        </div>
-      </section>
 
-      <footer className="border-t border-slate-800 px-5 py-10">
-        <div className="mx-auto max-w-6xl text-center text-sm text-gray-500">
-          <p>© 2026 Joseba · Programador · IA · Dirección de proyectos</p>
-          <p className="mt-1">Bilbao, Bizkaia</p>
-        </div>
-      </footer>
+          <div className="space-y-2 font-mono text-[11px] text-[var(--muted)]">
+            <p className="flex items-center gap-2">
+              <span className="dot dot-done" />
+              Disponible para incorporación
+            </p>
+            <p>Bilbao, Bizkaia</p>
+          </div>
+        </aside>
+
+        {/* ---------------- CONTENIDO ---------------- */}
+        <main className="min-w-0 flex-1 pb-24 lg:py-16">
+          {/* INICIO */}
+          <section id="inicio" className="scroll-mt-24 pt-10 lg:pt-0">
+            <p className="font-mono text-[11px] leading-relaxed text-[var(--muted)] lg:hidden">
+              Bilbao, Bizkaia
+            </p>
+
+            <h2 className="mt-4 max-w-[15ch] font-display text-[38px] font-semibold leading-[1.02] tracking-tight sm:text-[54px] lg:mt-0 lg:max-w-[16ch] lg:text-[64px]">
+              Que el teléfono lo coja el software.
+            </h2>
+
+            <p className="mt-6 max-w-[62ch] text-[16px] leading-[1.7] text-[var(--muted)] sm:text-[17px]">
+              Llevo diecisiete años en telecomunicaciones, los tres últimos construyendo agentes de
+              voz con IA y el CRM donde aterriza todo lo que atienden. Debajo hay una llamada real de
+              las que gestionan estos sistemas.
+            </p>
+
+            <div className="mt-9">
+              <CallPanel />
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href="#sistemas" className="btn-solid">
+                Ver los sistemas
+              </a>
+              <a href="#contacto" className="btn-ghost">
+                Hablamos
+              </a>
+            </div>
+          </section>
+
+          {/* SISTEMAS */}
+          <section id="sistemas" className="scroll-mt-24 pt-24 sm:pt-32">
+            <SectionHead title="Sistemas" note="Tres piezas de trabajo, con lo que hay debajo de cada una." />
+
+            <div className="mt-12 space-y-16 sm:space-y-20">
+              {SYSTEMS.map((s) => (
+                <article key={s.ref} className="border-l border-[var(--line-strong)] pl-5 sm:pl-8">
+                  <div className="flex items-baseline gap-4">
+                    <span className="font-mono text-[11px] text-[var(--signal)]">{s.ref}</span>
+                    <span className="font-mono text-[11px] text-[var(--muted)]">{s.years}</span>
+                  </div>
+
+                  <h4 className="mt-3 font-display text-[26px] font-semibold leading-tight tracking-tight sm:text-[32px]">
+                    {s.name}
+                  </h4>
+                  <p className="mt-1.5 text-[13px] text-[var(--muted)]">{s.role}</p>
+
+                  <p className="mt-5 max-w-[64ch] text-[15.5px] leading-[1.7] text-[var(--ink-soft)]">
+                    {s.summary}
+                  </p>
+
+                  <div className="mt-7 aspect-[16/10] w-full overflow-hidden border border-[var(--line)] bg-[var(--panel)] sm:aspect-[16/9]">
+                    {s.image ? (
+                      <img src={s.image} alt={s.name} loading="lazy" className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <span className="font-mono text-[11px] text-[var(--muted)]">
+                          {/* Sustituye por /captura-x.jpg en la carpeta public */}
+                          captura pendiente
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <ul className="mt-7 space-y-2.5">
+                    {s.build.map((b) => (
+                      <li key={b} className="flex gap-3 text-[14.5px] leading-relaxed text-[var(--muted)]">
+                        <span className="mt-[9px] h-px w-3 shrink-0 bg-[var(--line-strong)]" />
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="mt-6 font-mono text-[11px] leading-relaxed text-[var(--muted)]">
+                    {s.stack.join('   /   ')}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* TRAYECTORIA */}
+          <section id="trayectoria" className="scroll-mt-24 pt-24 sm:pt-32">
+            <SectionHead title="Trayectoria" note="De punto de venta a dirección de producto, sin salir del sector." />
+
+            <ol className="mt-12">
+              {TIMELINE.map((t, i) => (
+                <li
+                  key={t.years}
+                  className={`grid gap-2 border-t border-[var(--line)] py-7 sm:grid-cols-[140px_1fr] sm:gap-8 ${
+                    i === TIMELINE.length - 1 ? 'border-b' : ''
+                  }`}
+                >
+                  <span className="font-mono text-[11px] text-[var(--muted)] sm:pt-1">{t.years}</span>
+                  <div>
+                    <h4 className="font-display text-[19px] font-semibold leading-snug tracking-tight sm:text-[21px]">
+                      {t.role}
+                    </h4>
+                    <p className="mt-1 text-[13px] text-[var(--muted)]">{t.place}</p>
+                    <p className="mt-3 max-w-[62ch] text-[14.5px] leading-[1.7] text-[var(--ink-soft)]">
+                      {t.note}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {/* CAPACIDADES */}
+          <section id="capacidades" className="scroll-mt-24 pt-24 sm:pt-32">
+            <SectionHead title="Capacidades" note="Lo que uso a diario, no una lista de todo lo que he tocado." />
+
+            <div className="mt-12 grid gap-px border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2">
+              {CAPABILITIES.map((c) => (
+                <div key={c.group} className="bg-[var(--bg)] p-6">
+                  <h4 className="font-display text-[16px] font-semibold tracking-tight text-[var(--signal)]">
+                    {c.group}
+                  </h4>
+                  <p className="mt-3 text-[14.5px] leading-[1.85] text-[var(--muted)]">
+                    {c.items.join(', ')}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-8 font-mono text-[11px] leading-relaxed text-[var(--muted)]">
+              Español nativo   /   Euskera básico   /   Inglés medio hablado, alto escrito
+            </p>
+          </section>
+
+          {/* CONTACTO */}
+          <section id="contacto" className="scroll-mt-24 pt-24 sm:pt-32">
+            <h3 className="max-w-[18ch] font-display text-[34px] font-semibold leading-[1.05] tracking-tight sm:text-[46px]">
+              Si tienes un proceso que se come el día de alguien, cuéntamelo.
+            </h3>
+
+            <p className="mt-6 max-w-[60ch] text-[16px] leading-[1.7] text-[var(--muted)]">
+              Trabajo mejor donde hay una operativa real que arreglar: llamadas que nadie coge,
+              datos en tres sitios distintos, tareas que se repiten cada mañana.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-3">
+              {/* ← cambia por tu correo */}
+              <a href="mailto:TU-EMAIL@AQUI.COM" className="btn-solid">
+                Escríbeme
+              </a>
+              {/* ← cambia por tu perfil */}
+              <a
+                href="https://www.linkedin.com/in/TU-USUARIO"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/jtellearroyo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost"
+              >
+                GitHub
+              </a>
+            </div>
+
+            <footer className="mt-20 border-t border-[var(--line)] pt-6 font-mono text-[11px] text-[var(--muted)]">
+              <p>Joseba — Bilbao, Bizkaia</p>
+              <p className="mt-1">Diseñado y programado por mí. 2026.</p>
+            </footer>
+          </section>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function SectionHead({ title, note }) {
+  return (
+    <div className="border-b border-[var(--line-strong)] pb-5">
+      <h3 className="font-display text-[13px] font-semibold tracking-tight text-[var(--muted)]">
+        {title}
+      </h3>
+      <p className="mt-2 max-w-[52ch] font-display text-[22px] font-semibold leading-snug tracking-tight sm:text-[26px]">
+        {note}
+      </p>
     </div>
   );
 }
