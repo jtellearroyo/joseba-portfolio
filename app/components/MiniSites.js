@@ -216,7 +216,7 @@ function SiteIcon({ name, size = 18, className = '' }) {
 }
 
 function CoverPhoto({ src, className = '' }) {
-  return <img src={src} alt="" loading="lazy" className={`photo-cover ${className}`} />;
+  return <img src={src} alt="" className={`photo-cover ${className}`} />;
 }
 
 function MetaStrip({ site, tone = 'dark' }) {
