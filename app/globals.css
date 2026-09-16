@@ -600,15 +600,7 @@ a {
 }
 
 .site-panel-active {
-  height: 560px;
-}
-
-.site-panel-icon-deco {
-  position: absolute;
-  z-index: 1;
-  right: -18px;
-  bottom: -18px;
-  opacity: 0.12;
+  height: 620px;
 }
 
 .site-panel-header {
@@ -632,12 +624,10 @@ a {
 .site-panel-body {
   position: relative;
   z-index: 2;
-  padding: 0 20px 22px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  max-height: calc(560px - 64px);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .site-panel-active .site-panel-body {
@@ -646,41 +636,116 @@ a {
   transition-delay: 0.15s;
 }
 
-.site-highlights {
-  margin-top: 20px;
+/* ---------- Lienzo compartido de cada layout ---------- */
+
+.layout-shell {
+  position: relative;
+  width: 100%;
+  height: 540px;
+  overflow: hidden;
+}
+
+.photo-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-bottom {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(10, 8, 6, 0.92), rgba(10, 8, 6, 0.35) 55%, rgba(10, 8, 6, 0.05) 82%);
+}
+
+.overlay-top {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(6, 10, 18, 0.82), rgba(6, 10, 18, 0.15) 42%, rgba(6, 10, 18, 0.65) 100%);
+}
+
+.overlay-warm {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(32, 20, 13, 0.92), rgba(58, 36, 23, 0.4) 55%, rgba(32, 20, 13, 0.1) 85%);
+}
+
+.gym-photo {
+  filter: grayscale(0.5) contrast(1.15) brightness(0.68);
+}
+
+.gym-diagonal {
+  position: absolute;
+  z-index: 1;
+  top: -60%;
+  left: 52%;
+  width: 55%;
+  height: 220%;
+  transform: rotate(13deg);
+  opacity: 0.16;
+}
+
+.architecture-photo {
+  filter: grayscale(1) contrast(1.05);
+}
+
+.cafe-stamp {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  right: 16px;
+  width: 62px;
+  height: 62px;
+  border: 2px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  transform: rotate(-12deg);
+  background: rgba(0, 0, 0, 0.35);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.realestate-search {
+  margin-top: 18px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  padding-top: 14px;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px;
+  max-width: 360px;
 }
 
-.site-highlight {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  opacity: 0.85;
+.realestate-field {
+  font-size: 11.5px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.site-highlight-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.site-footer-line {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 10.5px;
-  opacity: 0.55;
+.realestate-field-btn {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 7px 16px;
 }
 
 @media (min-width: 1024px) {
+  .layout-shell {
+    height: 100%;
+  }
+
   .sites-accordion {
     flex-direction: row;
     height: 520px;
@@ -720,13 +785,6 @@ a {
   .site-panel-body {
     position: absolute;
     inset: 0;
-    max-height: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    padding: 28px;
-    overflow-y: auto;
   }
 }
 
