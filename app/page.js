@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import CrmDemo from './components/CrmDemo';
 
 /* ------------------------------------------------------------------ */
 /*  CONTENIDO                                                          */
@@ -59,8 +60,7 @@ const SYSTEMS = [
       'APIs REST para conectar con lo que ya tiene el cliente',
     ],
     stack: ['JavaScript', 'PHP', 'PostgreSQL', 'APIs REST'],
-    image: null,
-    demoLink: '/demo',
+    embed: true,
   },
   {
     ref: 'C',
@@ -700,28 +700,28 @@ export default function Page() {
                     {s.summary}
                   </p>
 
-                  {s.demoLink && (
-                    <a href={s.demoLink} className="btn-ghost mt-5 inline-flex">
-                      Ver demo interactiva →
-                    </a>
+                  {s.embed ? (
+                    <div className="mt-7 w-full">
+                      <CrmDemo />
+                    </div>
+                  ) : (
+                    <div
+                      className="tilt-card mt-7 aspect-[16/10] w-full overflow-hidden border border-[var(--line)] bg-[var(--panel)] sm:aspect-[16/9]"
+                      onMouseMove={handleTilt}
+                      onMouseLeave={resetTilt}
+                    >
+                      {s.image ? (
+                        <img src={s.image} alt={s.name} loading="lazy" className="h-full w-full object-cover" />
+                      ) : (
+                        <div className="img-placeholder flex h-full w-full items-center justify-center">
+                          <span className="font-mono text-[11px] text-[var(--muted)]">
+                            {/* Sustituye por /captura-x.jpg en la carpeta public */}
+                            captura pendiente
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   )}
-
-                  <div
-                    className="tilt-card mt-7 aspect-[16/10] w-full overflow-hidden border border-[var(--line)] bg-[var(--panel)] sm:aspect-[16/9]"
-                    onMouseMove={handleTilt}
-                    onMouseLeave={resetTilt}
-                  >
-                    {s.image ? (
-                      <img src={s.image} alt={s.name} loading="lazy" className="h-full w-full object-cover" />
-                    ) : (
-                      <div className="img-placeholder flex h-full w-full items-center justify-center">
-                        <span className="font-mono text-[11px] text-[var(--muted)]">
-                          {/* Sustituye por /captura-x.jpg en la carpeta public */}
-                          captura pendiente
-                        </span>
-                      </div>
-                    )}
-                  </div>
 
                   <ul className="mt-7 space-y-2.5">
                     {s.build.map((b) => (
