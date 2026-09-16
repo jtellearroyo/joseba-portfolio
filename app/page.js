@@ -58,7 +58,7 @@ const SYSTEMS = [
       'Núcleo común con módulos activables por cliente',
       'Los agentes de voz y WhatsApp escriben en el CRM en tiempo real',
       'Gestión de reservas, fichas y seguimiento en un único sitio',
-      'Integraciones vía API con CRMs externos como Odoo o Netclínicas',
+      'Integración vía API con plataformas externas (CRMs como Odoo, Netclínicas y otras)',
     ],
     stack: ['JavaScript', 'PHP', 'PostgreSQL', 'APIs REST'],
     embed: 'crm',
@@ -125,7 +125,7 @@ const CAPABILITIES = [
       'Node.js',
       'PostgreSQL',
       'APIs REST',
-      'Integraciones con Odoo y Netclínicas',
+      'Integraciones API con plataformas externas',
       'HTML y CSS',
       'WordPress',
     ],
@@ -517,6 +517,24 @@ function CallPanel() {
 export default function Page() {
   const [current, setCurrent] = useState('inicio');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    function update() {
+      setScrolled(window.scrollY > 4);
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -542,7 +560,11 @@ export default function Page() {
 
       <div className="relative z-[1] mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-10">
       {/* Barra móvil */}
-      <header className="sticky top-0 z-40 -mx-5 flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg)]/95 px-5 py-3.5 backdrop-blur sm:-mx-8 sm:px-8 lg:hidden">
+      <header
+        className={`sticky top-0 z-40 -mx-5 flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg)]/95 px-5 py-3.5 backdrop-blur sm:-mx-8 sm:px-8 lg:hidden ${
+          scrolled ? 'header-shrunk' : ''
+        }`}
+      >
         <a href="#inicio" className="flex items-center gap-2.5 font-display text-[17px] font-semibold tracking-tight">
           <span className="avatar-frame avatar-frame-sm">
             {PROFILE.photo ? (

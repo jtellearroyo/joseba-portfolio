@@ -234,8 +234,20 @@ a {
 }
 
 .avatar-frame-sm {
+  width: 64px;
+  height: 64px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-shrunk .avatar-frame-sm {
   width: 28px;
   height: 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-frame-sm {
+    transition: none;
+  }
 }
 
 .avatar-frame-lg {
