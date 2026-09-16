@@ -37,7 +37,7 @@ const SYSTEMS = [
     role: 'Diseño, desarrollo e integración',
     years: '2023 — 2026',
     summary:
-      'Diseñé y construí un asistente de voz con IA que contesta el teléfono, entiende lo que pide quien llama, consulta la agenda en tiempo real y cierra la cita sin que nadie tenga que descolgar.',
+      'Diseñé y desarrollé un asistente de voz basado en IA capaz de atender llamadas de forma autónoma, interpretar la solicitud del cliente, consultar la agenda en tiempo real y completar la reserva de citas sin intervención del personal.',
     build: [
       'Síntesis de voz con Eleven Labs para que la conversación no suene a robot',
       'Orquestación en Google Cloud: intención, agenda, confirmación',
@@ -637,19 +637,26 @@ export default function Page() {
               Currículum · Bilbao, Bizkaia
             </p>
 
-            <h2 className="mt-4 max-w-[15ch] font-display text-[38px] font-semibold leading-[1.02] tracking-tight sm:text-[54px] lg:mt-0 lg:max-w-[16ch] lg:text-[64px]">
-              {'Que el teléfono lo coja el software.'.split(' ').flatMap((w, i) => [
-                <span key={i} className="word-in" style={{ animationDelay: `${i * 65}ms` }}>
+            <h2 className="mt-4 max-w-[17ch] font-display text-[34px] font-semibold leading-[1.05] tracking-tight sm:text-[48px] lg:mt-0 lg:max-w-[18ch] lg:text-[56px]">
+              {'Construyo sistemas de IA que atienden, entienden y resuelven llamadas.'.split(' ').flatMap((w, i) => [
+                <span key={i} className="word-in" style={{ animationDelay: `${i * 55}ms` }}>
                   {w}
                 </span>,
                 ' ',
               ])}
             </h2>
 
-            <p className="mt-6 max-w-[62ch] text-[16px] leading-[1.7] text-[var(--muted)] sm:text-[17px]">
-              Soy Joseba Telletxea. Llevo diecisiete años en telecomunicaciones, los tres últimos
-              diseñando y construyendo yo mismo agentes de voz con IA y el CRM donde aterriza todo lo
-              que atienden. Debajo hay una llamada real de las que gestionan los sistemas que hice.
+            <p className="mt-4 font-display text-[17px] italic text-[var(--signal)] sm:text-[19px]">
+              Que el teléfono lo coja el software.
+            </p>
+
+            <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.7] text-[var(--muted)] sm:text-[17px]">
+              Soy Joseba Telletxea. Cuento con diecisiete años de experiencia en telecomunicaciones y,
+              durante los últimos tres, me he especializado en el diseño, desarrollo e implementación de
+              agentes de voz con inteligencia artificial y sistemas CRM integrados. He desarrollado
+              soluciones completas capaces de atender llamadas, interpretar las necesidades del cliente,
+              consultar disponibilidad en tiempo real, gestionar citas y automatizar su seguimiento.
+              Debajo hay una llamada real de las que gestionan los sistemas que hice.
             </p>
 
             <div className="mt-9">
@@ -675,7 +682,7 @@ export default function Page() {
             <SectionHead
               eyebrow="01 — Lo que he hecho"
               question="¿Qué he construido estos últimos años?"
-              note="Esto es lo que diseñé, construí y puse en marcha yo mismo, con mis manos, en mi puesto actual."
+              note="Estos son algunos de los sistemas que he diseñado, desarrollado e implementado de principio a fin en mi puesto actual."
             />
 
             <div className="mt-12 space-y-16 sm:space-y-20">
