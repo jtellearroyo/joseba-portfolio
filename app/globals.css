@@ -243,8 +243,28 @@ a {
 }
 
 .avatar-frame-lg {
-  width: 84px;
-  height: 84px;
+  width: 176px;
+  height: 176px;
+}
+
+.avatar-frame-lg::after {
+  inset: 6px;
+}
+
+.avatar-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-halo {
+  position: absolute;
+  inset: -34px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--signal) 55%, transparent) 0%, transparent 70%);
+  filter: blur(22px);
+  pointer-events: none;
+  animation: drift 10s ease-in-out infinite;
 }
 
 .avatar-fallback {
@@ -262,7 +282,7 @@ a {
 }
 
 .avatar-fallback-lg {
-  font-size: 32px;
+  font-size: 56px;
 }
 
 @keyframes spin {
@@ -778,6 +798,7 @@ a {
     transition: none;
   }
   .avatar-frame::before,
+  .avatar-halo,
   .hero-glow,
   .img-placeholder::before,
   .marquee-track,

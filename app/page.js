@@ -125,8 +125,8 @@ const CAPABILITIES = [
     items: ['Google Ads', 'Analytics', 'Tag Manager', 'SEO técnico', 'Email marketing'],
   },
   {
-    group: 'Dirección',
-    items: ['Gestión de proyectos', 'Relación con cliente', 'Equipos', 'Producto'],
+    group: 'Comercial y dirección',
+    items: ['Ventas', 'Negociación', 'Relación con cliente', 'Gestión de proyectos', 'Equipos', 'Producto'],
   },
 ];
 
@@ -573,22 +573,25 @@ export default function Page() {
         {/* ---------------- RAIL ---------------- */}
         <aside className="hidden lg:flex lg:h-screen lg:w-[300px] lg:shrink-0 lg:flex-col lg:justify-between lg:py-16 lg:sticky lg:top-0">
           <div>
-            <span className="avatar-frame avatar-frame-lg">
-              {PROFILE.photo ? (
-                <img src={PROFILE.photo} alt="Joseba Telletxea" className="h-full w-full object-cover" />
-              ) : (
-                <span className="avatar-fallback avatar-fallback-lg">J</span>
-              )}
-            </span>
+            <div className="avatar-wrap">
+              <div className="avatar-halo" aria-hidden="true" />
+              <span className="avatar-frame avatar-frame-lg">
+                {PROFILE.photo ? (
+                  <img src={PROFILE.photo} alt="Joseba Telletxea" className="h-full w-full object-cover" />
+                ) : (
+                  <span className="avatar-fallback avatar-fallback-lg">J</span>
+                )}
+              </span>
+            </div>
 
-            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--signal)]">
+            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--signal)]">
               Currículum · Portfolio
             </p>
             <h1 className="mt-3 font-display text-[32px] font-semibold leading-[1.1] tracking-tight">
               Joseba Telletxea
             </h1>
             <p className="mt-3 max-w-[240px] text-[15px] leading-relaxed text-[var(--muted)]">
-              Construyo sistemas de IA que atienden, entienden y resuelven sin que nadie descuelgue.
+              Uno la automatización con IA y el instinto comercial para que mis clientes vendan más.
             </p>
 
             <nav className="mt-12 space-y-1">
@@ -658,6 +661,12 @@ export default function Page() {
               consultar disponibilidad en tiempo real, gestionar citas y automatizar su seguimiento.
               Debajo hay una llamada real de las que gestionan los sistemas que hice.
             </p>
+
+            <blockquote className="mt-6 max-w-[56ch] border-l-2 border-[var(--signal)] pl-5 font-display text-[18px] italic leading-snug text-[var(--ink-soft)] sm:text-[20px]">
+              Empecé vendiendo cara a cara, en un punto de venta. Ese instinto comercial es el que meto
+              en cada sistema que diseño: no busco solo automatizar, busco que conviertan más llamadas
+              en clientes.
+            </blockquote>
 
             <div className="mt-9">
               <CallPanel />
