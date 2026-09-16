@@ -65,13 +65,13 @@ const SYSTEMS = [
   },
   {
     ref: 'C',
-    name: 'Captación digital y web corporativa',
+    name: 'Captación digital y desarrollo web',
     role: 'Dirección y ejecución',
     years: '2009 — 2026',
     summary:
-      'Llevé de principio a fin la web corporativa, las campañas de pago, el SEO técnico y la medición: la parte menos vistosa, pero la que hace que el teléfono suene por algo más que el boca a boca.',
+      'Llevé de principio a fin la web corporativa y las webs de clientes, además de las campañas de pago, el SEO técnico y la medición: la parte menos vistosa, pero la que hace que el teléfono suene por algo más que el boca a boca.',
     build: [
-      'Web corporativa completa: estructura, contenido, SEO técnico y medición',
+      'Web corporativa y páginas para clientes: estructura, contenido, SEO técnico y medición',
       'Campañas de Google Ads gestionadas y optimizadas de forma continua',
       'Email marketing y comunicación masiva a base instalada',
       'Edición de vídeo y diseño gráfico para campañas y redes sociales',
