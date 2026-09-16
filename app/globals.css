@@ -558,6 +558,124 @@ a {
   will-change: transform;
 }
 
+/* ---------- Acordeón de mini-portadas ---------- */
+
+.sites-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.site-panel {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  height: 64px;
+  flex: 0 0 auto;
+  transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1), flex-grow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.site-panel-active {
+  height: 430px;
+}
+
+.site-panel-icon-deco {
+  position: absolute;
+  z-index: 1;
+  right: -18px;
+  bottom: -18px;
+  opacity: 0.12;
+}
+
+.site-panel-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px;
+  padding: 0 16px;
+}
+
+.site-panel-label {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.site-panel-body {
+  position: relative;
+  z-index: 2;
+  padding: 0 20px 22px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.site-panel-active .site-panel-body {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.15s;
+}
+
+@media (min-width: 1024px) {
+  .sites-accordion {
+    flex-direction: row;
+    height: 430px;
+  }
+
+  .site-panel {
+    width: auto;
+    height: 100%;
+    flex: 1 1 0%;
+  }
+
+  .site-panel-active {
+    flex: 6 1 0%;
+    height: 100%;
+  }
+
+  .site-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    height: 100%;
+    width: 100%;
+    padding: 20px 0 20px 18px;
+    transition: opacity 0.25s ease;
+  }
+
+  .site-panel-active .site-panel-header {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .site-panel-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .site-panel-body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-panel {
+    transition: none;
+  }
+}
+
 /* ---------- Demo CRM ---------- */
 
 .nav-btn {

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import CrmDemo from './components/CrmDemo';
+import MiniSites from './components/MiniSites';
 
 /* ------------------------------------------------------------------ */
 /*  CONTENIDO                                                          */
@@ -60,7 +61,7 @@ const SYSTEMS = [
       'APIs REST para conectar con lo que ya tiene el cliente',
     ],
     stack: ['JavaScript', 'PHP', 'PostgreSQL', 'APIs REST'],
-    embed: true,
+    embed: 'crm',
   },
   {
     ref: 'C',
@@ -76,7 +77,7 @@ const SYSTEMS = [
       'Analítica y Tag Manager para saber qué canal trae clientes',
     ],
     stack: ['Google Ads', 'Analytics', 'Tag Manager', 'WordPress', 'SEO'],
-    image: null,
+    embed: 'sites',
   },
 ];
 
@@ -700,9 +701,13 @@ export default function Page() {
                     {s.summary}
                   </p>
 
-                  {s.embed ? (
+                  {s.embed === 'crm' ? (
                     <div className="mt-7 w-full">
                       <CrmDemo />
+                    </div>
+                  ) : s.embed === 'sites' ? (
+                    <div className="mt-7 w-full">
+                      <MiniSites />
                     </div>
                   ) : (
                     <div
