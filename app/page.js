@@ -45,7 +45,7 @@ const SYSTEMS = [
       'Escalado a persona cuando la conversación se sale del guion',
     ],
     stack: ['Google Cloud', 'Eleven Labs', 'WhatsApp Business API', 'Telefonía IP'],
-    image: null,
+    embed: 'call',
   },
   {
     ref: 'B',
@@ -58,7 +58,7 @@ const SYSTEMS = [
       'Núcleo común con módulos activables por cliente',
       'Los agentes de voz y WhatsApp escriben en el CRM en tiempo real',
       'Gestión de reservas, fichas y seguimiento en un único sitio',
-      'APIs REST para conectar con lo que ya tiene el cliente',
+      'Integraciones vía API con CRMs externos como Odoo o Netclínicas',
     ],
     stack: ['JavaScript', 'PHP', 'PostgreSQL', 'APIs REST'],
     embed: 'crm',
@@ -74,6 +74,7 @@ const SYSTEMS = [
       'Web corporativa completa: estructura, contenido, SEO técnico y medición',
       'Campañas de Google Ads gestionadas y optimizadas de forma continua',
       'Email marketing y comunicación masiva a base instalada',
+      'Edición de vídeo y diseño gráfico para campañas y redes sociales',
       'Analítica y Tag Manager para saber qué canal trae clientes',
     ],
     stack: ['Google Ads', 'Analytics', 'Tag Manager', 'WordPress', 'SEO'],
@@ -118,11 +119,20 @@ const CAPABILITIES = [
   },
   {
     group: 'Desarrollo',
-    items: ['JavaScript', 'PHP', 'Node.js', 'PostgreSQL', 'APIs REST', 'HTML y CSS', 'WordPress'],
+    items: [
+      'JavaScript',
+      'PHP',
+      'Node.js',
+      'PostgreSQL',
+      'APIs REST',
+      'Integraciones con Odoo y Netclínicas',
+      'HTML y CSS',
+      'WordPress',
+    ],
   },
   {
     group: 'Crecimiento',
-    items: ['Google Ads', 'Analytics', 'Tag Manager', 'SEO técnico', 'Email marketing'],
+    items: ['Google Ads', 'Analytics', 'Tag Manager', 'SEO técnico', 'Email marketing', 'Edición de vídeo', 'Diseño gráfico'],
   },
   {
     group: 'Comercial y dirección',
@@ -641,7 +651,7 @@ export default function Page() {
             </p>
 
             <h2 className="mt-4 max-w-[17ch] font-display text-[34px] font-semibold leading-[1.05] tracking-tight sm:text-[48px] lg:mt-0 lg:max-w-[18ch] lg:text-[56px]">
-              {'Construyo sistemas de IA que atienden, entienden y resuelven llamadas.'.split(' ').flatMap((w, i) => [
+              {'Diseño y construyo los sistemas que hacen crecer un negocio.'.split(' ').flatMap((w, i) => [
                 <span key={i} className="word-in" style={{ animationDelay: `${i * 55}ms` }}>
                   {w}
                 </span>,
@@ -649,17 +659,13 @@ export default function Page() {
               ])}
             </h2>
 
-            <p className="mt-4 font-display text-[17px] italic text-[var(--signal)] sm:text-[19px]">
-              Que el teléfono lo coja el software.
-            </p>
-
             <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.7] text-[var(--muted)] sm:text-[17px]">
               Soy Joseba Telletxea. Cuento con diecisiete años de experiencia en telecomunicaciones y,
               durante los últimos tres, me he especializado en el diseño, desarrollo e implementación de
               agentes de voz con inteligencia artificial y sistemas CRM integrados. He desarrollado
               soluciones completas capaces de atender llamadas, interpretar las necesidades del cliente,
               consultar disponibilidad en tiempo real, gestionar citas y automatizar su seguimiento.
-              Debajo hay una llamada real de las que gestionan los sistemas que hice.
+              Debajo tienes los sistemas que he construido, con un ejemplo real de cada uno.
             </p>
 
             <blockquote className="mt-6 max-w-[56ch] border-l-2 border-[var(--signal)] pl-5 font-display text-[18px] italic leading-snug text-[var(--ink-soft)] sm:text-[20px]">
@@ -667,10 +673,6 @@ export default function Page() {
               en cada sistema que diseño: no busco solo automatizar, busco que conviertan más llamadas
               en clientes.
             </blockquote>
-
-            <div className="mt-9">
-              <CallPanel />
-            </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <a href="#sistemas" className="btn-solid">
@@ -717,7 +719,16 @@ export default function Page() {
                     {s.summary}
                   </p>
 
-                  {s.embed === 'crm' ? (
+                  {s.embed === 'call' ? (
+                    <div className="mt-7 w-full">
+                      <p className="font-display text-[16px] italic text-[var(--signal)] sm:text-[18px]">
+                        Que el teléfono lo coja el software.
+                      </p>
+                      <div className="mt-4">
+                        <CallPanel />
+                      </div>
+                    </div>
+                  ) : s.embed === 'crm' ? (
                     <div className="mt-7 w-full">
                       <CrmDemo />
                     </div>
