@@ -662,7 +662,7 @@ export default function Page() {
         {/* ---------------- CONTENIDO ---------------- */}
         <main className="min-w-0 flex-1 pb-24 lg:py-16">
           {/* INICIO */}
-          <section id="inicio" className="relative scroll-mt-24 pt-10 lg:pt-0">
+          <section id="inicio" className="relative scroll-mt-24 overflow-hidden pt-10 lg:pt-0">
             <div className="hero-glow" aria-hidden="true" />
             <span className="hero-ghost hidden lg:block" aria-hidden="true">
               IA
