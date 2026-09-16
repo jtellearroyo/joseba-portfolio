@@ -18,7 +18,7 @@ const SECTIONS = [
 
 // Pon tu foto en public/foto.jpg (cuadrada, mínimo 400x400) y cambia esto:
 const PROFILE = {
-  photo: null, // '/foto.jpg'
+  photo: '/foto.jpg',
 };
 
 // Guion de la llamada que se reproduce en la portada.
