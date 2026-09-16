@@ -60,6 +60,7 @@ const SYSTEMS = [
     ],
     stack: ['JavaScript', 'PHP', 'PostgreSQL', 'APIs REST'],
     image: null,
+    demoLink: '/demo',
   },
   {
     ref: 'C',
@@ -698,6 +699,12 @@ export default function Page() {
                   <p className="mt-5 max-w-[64ch] text-[15.5px] leading-[1.7] text-[var(--ink-soft)]">
                     {s.summary}
                   </p>
+
+                  {s.demoLink && (
+                    <a href={s.demoLink} className="btn-ghost mt-5 inline-flex">
+                      Ver demo interactiva →
+                    </a>
+                  )}
 
                   <div
                     className="tilt-card mt-7 aspect-[16/10] w-full overflow-hidden border border-[var(--line)] bg-[var(--panel)] sm:aspect-[16/9]"
