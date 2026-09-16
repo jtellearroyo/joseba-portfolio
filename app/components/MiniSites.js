@@ -10,6 +10,8 @@ const SITES = [
     subheadline: 'Cocina de fuego lento en el centro de Bilbao. Reserva tu mesa en menos de un minuto.',
     cta: 'Reservar mesa',
     nav: ['Carta', 'Reservas', 'Contacto'],
+    highlights: ['Menú del día', 'Carta de vinos', 'Eventos privados'],
+    footer: 'C/ Ejemplo 12, Bilbao · Abierto de 13:00 a 23:30',
     bg: 'linear-gradient(160deg, #2b1710, #4a2418)',
     accent: '#e0793c',
     icon: 'fork',
@@ -21,6 +23,8 @@ const SITES = [
     subheadline: 'Producción limitada, tejidos naturales y envío en 24h a toda la península.',
     cta: 'Ver colección',
     nav: ['Colección', 'Nosotros', 'Tienda'],
+    highlights: ['Nueva colección', 'Edición limitada', 'Envío en 24h'],
+    footer: 'C/ Ejemplo 8, Bilbao · Lunes a sábado, 10:00–20:00',
     bg: 'linear-gradient(160deg, #241c22, #3a2530)',
     accent: '#e8a6c0',
     icon: 'hanger',
@@ -32,6 +36,8 @@ const SITES = [
     subheadline: 'Color, corte y tratamiento. Pide cita online sin llamar por teléfono.',
     cta: 'Pedir cita',
     nav: ['Servicios', 'Equipo', 'Cita online'],
+    highlights: ['Color y mechas', 'Tratamiento capilar', 'Peinados de novia'],
+    footer: 'C/ Ejemplo 21, Bilbao · Cita previa online',
     bg: 'linear-gradient(160deg, #1c1417, #33191f)',
     accent: '#f2b6c6',
     icon: 'scissors',
@@ -43,6 +49,8 @@ const SITES = [
     subheadline: 'Sala de musculación, clases dirigidas y planes personalizados desde el primer día.',
     cta: 'Prueba gratis',
     nav: ['Clases', 'Planes', 'Horarios'],
+    highlights: ['Sala de musculación', 'Clases dirigidas', 'Entrenador personal'],
+    footer: 'Polígono Ejemplo, Bilbao · Abierto 24 horas',
     bg: 'linear-gradient(160deg, #0c0c0c, #1c1c1c)',
     accent: '#c6ff3d',
     icon: 'dumbbell',
@@ -54,6 +62,8 @@ const SITES = [
     subheadline: 'Revisión, ortodoncia y estética dental con financiación a medida.',
     cta: 'Pedir cita',
     nav: ['Tratamientos', 'Equipo', 'Financiación'],
+    highlights: ['Revisión gratuita', 'Ortodoncia invisible', 'Estética dental'],
+    footer: 'C/ Ejemplo 5, Bilbao · Financiación sin intereses',
     bg: 'linear-gradient(160deg, #0e1f1c, #163832)',
     accent: '#5fe3c0',
     icon: 'tooth',
@@ -65,6 +75,8 @@ const SITES = [
     subheadline: 'Compra, alquiler y tasación en Bizkaia. Filtra por barrio, precio y metros.',
     cta: 'Ver propiedades',
     nav: ['Comprar', 'Alquilar', 'Tasar'],
+    highlights: ['Pisos en venta', 'Alquiler garantizado', 'Tasación gratuita'],
+    footer: 'C/ Ejemplo 30, Bilbao · Respuesta en menos de 24h',
     bg: 'linear-gradient(160deg, #0f1a2b, #1a2b45)',
     accent: '#d8c08a',
     icon: 'house',
@@ -76,6 +88,8 @@ const SITES = [
     subheadline: 'Proyectos residenciales y reforma integral, de la idea a la llave en mano.',
     cta: 'Ver proyectos',
     nav: ['Proyectos', 'Estudio', 'Contacto'],
+    highlights: ['Vivienda unifamiliar', 'Reforma integral', 'Interiorismo'],
+    footer: 'C/ Ejemplo 14, Bilbao · Primera consulta sin coste',
     bg: 'linear-gradient(160deg, #16161a, #26262c)',
     accent: '#cda86a',
     icon: 'building',
@@ -87,6 +101,8 @@ const SITES = [
     subheadline: 'Tueste propio, repostería de horno y desayunos hasta las 13:00.',
     cta: 'Ver carta',
     nav: ['Carta', 'Historia', 'Ubicación'],
+    highlights: ['Tueste propio', 'Repostería artesana', 'Brunch de fin de semana'],
+    footer: 'C/ Ejemplo 3, Bilbao · Todos los días, 8:00–20:00',
     bg: 'linear-gradient(160deg, #20140d, #3a2417)',
     accent: '#e3b877',
     icon: 'coffee',
@@ -145,6 +161,12 @@ const ICON_PATHS = {
       <path d="M5 9V6h9v3" />
     </>
   ),
+  pin: (
+    <>
+      <path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11Z" />
+      <circle cx="12" cy="10" r="2.3" />
+    </>
+  ),
 };
 
 function SiteIcon({ name, size = 18 }) {
@@ -201,7 +223,7 @@ function SitePanel({ site, active, onToggle }) {
           </div>
         </div>
 
-        <div>
+        <div className="mt-4">
           <p className="font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: site.accent }}>
             {site.sector}
           </p>
@@ -215,6 +237,20 @@ function SitePanel({ site, active, onToggle }) {
           >
             {site.cta}
           </span>
+        </div>
+
+        <div className="site-highlights">
+          {site.highlights.map((h) => (
+            <div key={h} className="site-highlight">
+              <span className="site-highlight-dot" style={{ background: site.accent }} />
+              <span>{h}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="site-footer-line">
+          <SiteIcon name="pin" size={12} />
+          <span>{site.footer}</span>
         </div>
       </div>
     </div>
